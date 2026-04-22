@@ -1,4 +1,3 @@
-// https://www.theaudiodb.com/api/v1/json/2/search.php?s=scorpions
 let genreName = document.querySelector(".genre-name");
 let artistName = document.querySelector(".artist-name");
 let member = document.querySelector(".member");
@@ -6,24 +5,29 @@ let country = document.querySelector(".country");
 let bornYear = document.querySelector(".born-year");
 let tableBody = document.querySelector("tbody");
 let counter = 1;
-// main request code
-let request = new XMLHttpRequest();
-request.open("GET", "https://www.theaudiodb.com/api/v1/json/2/search.php?s=dogma");
-request.addEventListener("load", function () {
-  let data = JSON.parse(request.responseText);
-  // createTableRow(counter,
-  //   data.artists[0].strGenre,
-  //   data.artists[0].strArtist,
-  //   data.artists[0].intMembers,
-  //   data.artists[0].strCountry,
-  //   data.artists[0].intBornYear
-  // );
-  data.artists.forEach(artist => {
-    console.log(artist);
-  })
-});
-request.send();
-
+const artistsArr = [
+  "anathema",
+  "scorpions",
+  "metallica",
+  "nirvana",
+  "chicago",
+  "aerosmith  ",
+  "chicago",
+  "eminem",
+  "madonna",
+  "abba",
+  "drake",
+  "adel",
+  "radiohead",
+  "tarkan",
+  "bts",
+  "beyonce",
+  "shakira",
+  "him",
+  "pink",
+  "blackpink",
+  "lanadelrey"
+]
 
 function createTableRow(counter, a, b, c, d, e) {
   let tableRow = document.createElement("tr");
@@ -49,3 +53,24 @@ function createTableRow(counter, a, b, c, d, e) {
   tableBody.appendChild(tableRow);
   counter++;
 }
+
+
+artistsArr.forEach((element) => {
+  fetch(`https://www.theaudiodb.com/api/v1/json/2/search.php?s=${element}`)
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      console.log(data);
+      createTableRow(counter,
+        data.artists[0].strGenre,
+        data.artists[0].strArtist,
+        data.artists[0].intMembers,
+        data.artists[0].strCountry,
+        data.artists[0].intFormedYear
+      );
+    })
+    .catch((error) => {
+      console.log(error)
+    })
+});
