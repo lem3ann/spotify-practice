@@ -2,10 +2,10 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    color: rgb(214, 209, 209);
+    color: rgb(83, 82, 82);
 }
 
-body {
+.body {
     background-color: black;
 }
 
@@ -89,4 +89,35 @@ tbody tr td {
 .img-resize img {
     width: 100%;
     height: auto;
+}
+.shopping-list li {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    /* background-color: antiquewhite; */
+}
+
+.shopping-list li .item-name {
+    flex: 1;
+    padding: 5px 10px;
+}
+
+.shopping-list li:hover .delete-icon {
+    transform: scale(1);
+}
+li button{
+    border-radius: 7px;
+    padding: 5px;
+    border: none;
+    transition: .4s;
+}
+li button:hover{
+    opacity: 0.9;
+}
+li button:first-child{
+    color: aliceblue;
+    background-color: darkslateblue;
+}
+li button:last-child{
+    background-color: rgb(250, 141, 195);
 }

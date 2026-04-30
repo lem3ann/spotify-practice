@@ -26,8 +26,8 @@ const artistsArr = [
   "him",
   "pink",
   "blackpink",
-  "lanadelrey"
-]
+  "lanadelrey",
+];
 
 function createTableRow(counter, a, b, c, d, e) {
   let tableRow = document.createElement("tr");
@@ -54,7 +54,6 @@ function createTableRow(counter, a, b, c, d, e) {
   counter++;
 }
 
-
 artistsArr.forEach((element) => {
   fetch(`https://www.theaudiodb.com/api/v1/json/2/search.php?s=${element}`)
     .then((response) => {
@@ -62,15 +61,50 @@ artistsArr.forEach((element) => {
     })
     .then((data) => {
       console.log(data);
-      createTableRow(counter,
+      createTableRow(
+        counter,
         data.artists[0].strGenre,
         data.artists[0].strArtist,
         data.artists[0].intMembers,
         data.artists[0].strCountry,
-        data.artists[0].intFormedYear
+        data.artists[0].intFormedYear,
       );
     })
     .catch((error) => {
-      console.log(error)
-    })
+      console.log(error);
+    });
+});
+
+// !SECOND PAGE ELEMENT ADD FUNCTIONALTY  ------------------------------------------------------------JS
+let ulList = document.getElementsByClassName("shopping-list")[0];
+let form = document.getElementsByTagName("form")[0];
+// for example
+const myElement = [
+  { id: 1, content: "list-1" },
+  { id: 2, content: "list-2" },
+  { id: 3, content: "list-3" },
+];
+
+function newListElement(arr) {
+  for (const x of arr) {
+    createListElement(x.content);
+  }
+}
+
+function createListElement(element) {
+  // create li element and details
+  let newLi = document.createElement("li");
+  newLi.textContent = element;
+  newLi.classList.add("py-2");
+  let deleteBtn = document.createElement("button");
+  deleteBtn.textContent = "Delete";
+  let editBtn = document.createElement("button");
+  editBtn.textContent = "Edit";
+  newLi.append(deleteBtn, editBtn);
+  ulList.appendChild(newLi);
+}
+let plusButton = document.getElementsByClassName("plus")[0];
+form.addEventListener("submit", function (event) {
+  event.preventDefault();
+  newListElement(myElement);
 });
