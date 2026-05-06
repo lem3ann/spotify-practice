@@ -11,15 +11,13 @@ const artistsArr = [
   "metallica",
   "nirvana",
   "chicago",
-  "aerosmith  ",
+  "aerosmith",
   "chicago",
   "eminem",
   "madonna",
   "abba",
   "drake",
-  "adel",
   "radiohead",
-  "tarkan",
   "bts",
   "beyonce",
   "shakira",
@@ -78,33 +76,76 @@ artistsArr.forEach((element) => {
 // !SECOND PAGE ELEMENT ADD FUNCTIONALTY  ------------------------------------------------------------JS
 let ulList = document.getElementsByClassName("shopping-list")[0];
 let form = document.getElementsByTagName("form")[0];
-// for example
-const myElement = [
-  { id: 1, content: "list-1" },
-  { id: 2, content: "list-2" },
-  { id: 3, content: "list-3" },
-];
+let userInput = document.getElementsByClassName("form-control")[0];
 
-function newListElement(arr) {
-  for (const x of arr) {
-    createListElement(x.content);
-  }
-}
-
-function createListElement(element) {
-  // create li element and details
-  let newLi = document.createElement("li");
-  newLi.textContent = element;
-  newLi.classList.add("py-2");
-  let deleteBtn = document.createElement("button");
-  deleteBtn.textContent = "Delete";
-  let editBtn = document.createElement("button");
-  editBtn.textContent = "Edit";
-  newLi.append(deleteBtn, editBtn);
-  ulList.appendChild(newLi);
-}
-let plusButton = document.getElementsByClassName("plus")[0];
+let mainArr = JSON.parse(localStorage.getItem("shopList")) || [];
+mainArr.forEach(element => {
+  createElement(element.content);
+});
 form.addEventListener("submit", function (event) {
   event.preventDefault();
-  newListElement(myElement);
+  let value = userInput.value.trim();
+  if (!value) {
+    return;
+  }
+  let myObj = {
+    id: Math.random(),
+    content: value
+  }
+  mainArr.push(myObj);
+  createElement(myObj)
+  setLocalStorage();
+  userInput.value = "";
 });
+
+
+
+// ------------------------------
+// MAIN ARRAY DISPLAY FUNCTION
+// ------------------------------
+function createElement(text) {
+  let myList = document.createElement("li");
+  myList.classList.add("my-2");
+  myList.setAttribute("data-id", text.id);
+  myList.textContent = text.content;
+  let removeBtn = document.createElement("button");
+  removeBtn.innerText = "Delete";
+  removeBtn.classList.add("remove-btn");
+  let editBtn = document.createElement("button");
+  editBtn.innerText = "Edit";
+  editBtn.classList.add("edit-btn");
+  myList.append(removeBtn, editBtn);
+  ulList.appendChild(myList);
+  collectAllRemoveBtn();
+}
+
+function setLocalStorage() {
+  localStorage.setItem("shopList", JSON.stringify(mainArr));
+}
+
+// -------------------DELETE FUNCİTON ---------------------------------
+function collectAllRemoveBtn() {
+  let allRemoveBtn = document.getElementsByClassName("remove-btn");
+
+  for (let i = 0; i < allRemoveBtn.length; i++) {
+    allRemoveBtn[i].addEventListener("click", function (event) {
+
+      // klik olunan li
+      let li = event.target.parentElement;
+
+      // id-ni götür
+      let id = li.getAttribute("data-id");
+
+      // array-dən sil
+      mainArr = mainArr.filter(item => item.id != id);
+
+      // DOM-dan sil
+      li.remove();
+
+      // localStorage update
+      setLocalStorage();
+    });
+  }
+
+  // return allRemoveBtn;
+}
